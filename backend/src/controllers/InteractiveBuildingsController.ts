@@ -6,7 +6,7 @@
  * This project is released under the MIT license.                            *
  ******************************************************************************/
 
-import Core from "../Core";
+import Core from '../Core'
 
 /******************************************************************************
  * InteractiveBuildingsController.ts                                          *
@@ -16,23 +16,19 @@ import Core from "../Core";
  * This project is released under the MIT license.                            *
  ******************************************************************************/
 
-import {Request, Response} from "express";
-
+import { Request, Response } from 'express'
 
 class RegionsController {
-
-    private core: Core;
+    private core: Core
 
     constructor(core: Core) {
-        this.core = core;
+        this.core = core
     }
-
 
     public async getAllBuildings(request: Request, response: Response) {
-        let buildings = await this.core.getPrisma().interactiveBuilding.findMany();
-        response.send(buildings);
+        let buildings = await this.core.getPrisma().interactiveBuilding.findMany()
+        response.send(buildings)
     }
-
 }
 
-export default RegionsController;
+export default RegionsController

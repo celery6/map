@@ -59,10 +59,15 @@ model AdditionalBuilder {
 }
 
 model InteractiveBuilding {
-    id            String @id @default(uuid())
-    name            String
+    id          String @id @default(uuid())
+    name        String
     fileURL     String
     origin      String
     altitude    Int
     rotate      String
+}
+
+model DiscordSRVLink {
+  discordId          String @id
+  minecraftUUID      String
 }

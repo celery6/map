@@ -6,73 +6,68 @@
  * This project is released under the MIT license.                            *
  ******************************************************************************/
 
-import Core from "../Core";
-import {Request, Response} from "express";
-import {validationResult} from "express-validator";
-
+import Core from '../Core'
+import { Request, Response } from 'express'
+import { validationResult } from 'express-validator'
 
 export default class StatsController {
-    private core: Core;
+    private core: Core
 
     constructor(core: Core) {
-        this.core = core;
+        this.core = core
     }
 
     public async getGeneralStats(request: Request, response: Response) {
-        const regionCount = await this.core.getPrisma().region.count();
-        const {_sum: regionSum} = await this.core.getPrisma().region.aggregate({
+        const regionCount = await this.core.getPrisma().region.count()
+        const { _sum: regionSum } = await this.core.getPrisma().region.aggregate({
             _sum: {
                 area: true
             }
         })
-        const totalArea = regionSum.area;
-        response.send({regionCount, totalArea});
+        const totalArea = regionSum.area
+        response.send({ regionCount, totalArea })
     }
 
     public async getLeaderboard(request: Request, response: Response) {
-        const errors = validationResult(request);
+        const errors = validationResult(request)
         if (!errors.isEmpty()) {
-            return response.status(400).json({errors: errors.array()});
+            return response.status(400).json({ errors: errors.array() })
         }
 
         const groupUsers = await this.core.getPrisma().region.groupBy({
             by: ['username'],
             _sum: {
-                area: true,
-            },
+                area: true
+            }
         })
-        let count = groupUsers.length;
+        let count = groupUsers.length
 
         const groupUsersPage = await this.core.getPrisma().region.groupBy({
             by: ['userUUID', 'username'],
             _sum: {
-                area: true,
+                area: true
             },
             orderBy: {
                 _sum: {
-                    area: 'desc',
-                },
+                    area: 'desc'
+                }
             },
             skip: parseInt(<string>request.query.page) * 10,
-            take: 10,
-
+            take: 10
         })
-
 
         const leaderboard = groupUsersPage.map((u) => {
             return {
                 username: u.username,
-                area: u._sum.area,
+                area: u._sum.area
             }
-        });
+        })
 
         const answer = {
             count,
-            leaderboard,
+            leaderboard
         }
 
-        response.send(answer);
+        response.send(answer)
     }
-
-
 }

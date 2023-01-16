@@ -6,8 +6,6 @@
  * This project is released under the MIT license.                            *
  ******************************************************************************/
 
-import { Request, Response } from 'express';
+import { Request, Response } from 'express'
 
-export type Executor = (request: Request, response: Response) => void;
-
-
+export type Executor = (request: Request, response: Response) => void

@@ -6,10 +6,10 @@
  * This project is released under the MIT license.                            *
  ******************************************************************************/
 
-import {GrantProperties} from "keycloak-connect";
+import { GrantProperties } from 'keycloak-connect'
 
 interface kAuth {
-    grant: any;
+    grant: any
 }
 declare global {
     namespace Express {

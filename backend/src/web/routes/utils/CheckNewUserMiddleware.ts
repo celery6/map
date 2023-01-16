@@ -6,9 +6,9 @@
  * This project is released under the MIT license.                            *
  ******************************************************************************/
 
-import {NextFunction, Request, Response} from "express";
-import {PrismaClient} from "@prisma/client";
-import Core from "../../../Core";
+import { NextFunction, Request, Response } from 'express'
+import { PrismaClient } from '@prisma/client'
+import Core from '../../../Core'
 
 const checkNewUser = (prisma: PrismaClient, core: Core) => {
     return async (req: Request, res: Response, next: NextFunction) => {
@@ -18,11 +18,16 @@ const checkNewUser = (prisma: PrismaClient, core: Core) => {
             }
         })
         if (user) {
-            const kcuser = await core.getKeycloakAdmin().getKeycloakAdminClient().users.findOne({
-                id: req.kauth.grant.access_token.content.sub
-            })
+            const kcuser = await core
+                .getKeycloakAdmin()
+                .getKeycloakAdminClient()
+                .users.findOne({
+                    id: req.kauth.grant.access_token.content.sub
+                })
             if (kcuser.federatedIdentities?.length > 0) {
-                const discordIdentity = kcuser.federatedIdentities.find((fi) => fi.identityProvider === "discord")
+                const discordIdentity = kcuser.federatedIdentities.find(
+                    (fi) => fi.identityProvider === 'discord'
+                )
                 if (discordIdentity) {
                     if (user.discordId !== discordIdentity.userId) {
                         const user = await prisma.user.update({
@@ -40,7 +45,7 @@ const checkNewUser = (prisma: PrismaClient, core: Core) => {
                             ssoId: req.kauth.grant.access_token.content.sub
                         },
                         data: {
-                            discordId: ""
+                            discordId: ''
                         }
                     })
                 }
@@ -50,18 +55,22 @@ const checkNewUser = (prisma: PrismaClient, core: Core) => {
                         ssoId: req.kauth.grant.access_token.content.sub
                     },
                     data: {
-                        discordId: ""
+                        discordId: ''
                     }
                 })
             }
-            next();
-            return;
+            next()
+            return
         } else {
-
-            const kcuser = await core.getKeycloakAdmin().getKeycloakAdminClient().users.findOne({
-                id: req.kauth.grant.access_token.content.sub
-            })
-            const discordIdentity = kcuser.federatedIdentities?.find((fi) => fi.identityProvider === "discord")
+            const kcuser = await core
+                .getKeycloakAdmin()
+                .getKeycloakAdminClient()
+                .users.findOne({
+                    id: req.kauth.grant.access_token.content.sub
+                })
+            const discordIdentity = kcuser.federatedIdentities?.find(
+                (fi) => fi.identityProvider === 'discord'
+            )
             if (discordIdentity) {
                 await prisma.user.create({
                     data: {
@@ -76,12 +85,10 @@ const checkNewUser = (prisma: PrismaClient, core: Core) => {
                     }
                 })
             }
-
         }
 
         next()
     }
-
 }
 
-export default checkNewUser;
+export default checkNewUser
