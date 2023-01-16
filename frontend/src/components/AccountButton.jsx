@@ -51,7 +51,7 @@ const AccountButton = props => {
                 <Menu.Dropdown>
                     <Menu.Label>Account</Menu.Label>
                     {keycloak?.authenticated && <Menu.Item icon={<AiOutlineUser size={14}/>}
-                                                           disabled>Hey, {keycloak?.tokenParsed.preferred_username}</Menu.Item>}
+                                                           disabled>Hi {keycloak?.tokenParsed.preferred_username} bestie!!!!</Menu.Item>}
                     {keycloak?.authenticated ?
                         <Menu.Item icon={<FiLock size={14}/>} onClick={() => logout()}>Logout</Menu.Item> :
                         <Menu.Item icon={<FiLock size={14}/>} onClick={() => login()}>Login</Menu.Item>}
