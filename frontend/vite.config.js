@@ -6,7 +6,7 @@ export default defineConfig({
   plugins: [react()],
   server: {
     proxy: {
-      '/api': 'http://localhost:8899',
+      '/api': 'https://map.btecanada.net:8899',
     }
   }
 })
